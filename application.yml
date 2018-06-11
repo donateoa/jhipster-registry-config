@@ -1,15 +1,27 @@
-# ===================================================================
-# JHipster Sample Spring Cloud Config.
-# ===================================================================
-
-# Property used on app startup to check the config server status
+#common configuration shared between all applications
 configserver:
-    name: JHipster Registry config server
-    status: Connected to the JHipster Registry config server, using https://github.com/donateoa/jhipster-registry-config.git !
+    name: Docker JHipster Registry
+    status: Connected to the JHipster Registry running in Docker
 
-# Default JWT secret token (to be changed in production!)
 jhipster:
     security:
         authentication:
             jwt:
-                secret: my-secret-token-to-change-in-production
+                secret: 721595255ac9bb1455317b7e53b4962a3d579062
+    logging:
+        logstash: # forward logs to ELK
+            enabled: true
+            host: jhipster-logstash
+    metrics:
+        logs: # report metrics in the logs
+            enabled: true
+            report-frequency: 60 # in seconds
+spring:
+    zipkin:
+        base-url: http://jhipster-zipkin:9411
+        enabled: true
+
+eureka:
+    client:
+        service-url:
+            defaultZone: http://admin:${jhipster.registry.password}@jhipster-registry:8761/eureka/
